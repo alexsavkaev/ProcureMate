@@ -2,14 +2,13 @@ package ru.aston.demo.suppliers.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "suppliers")
@@ -19,9 +18,8 @@ public class Supplier {
     private Long id;
     @Column(name = "supplier_name")
     private String supplierName;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
-    private List<Product> productList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> productList = new ArrayList<>();
 
 
 }
