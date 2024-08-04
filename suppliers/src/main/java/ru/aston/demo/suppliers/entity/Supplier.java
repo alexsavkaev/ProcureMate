@@ -23,4 +23,12 @@ public class Supplier {
     private List<Product> productList = new ArrayList<>();
 
 
+    public void addProduct(Product product){
+        product.setSupplier(this);
+        productList.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        productList.remove(product);
+    }
 }
