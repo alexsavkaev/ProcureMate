@@ -30,6 +30,7 @@ public class ProductServiceImpl implements ProductService {
         if (product.isEmpty()) {
             throw new ResourceNotFoundException("Product with id " + id + " not found!");
         }
-        return modelMapper.map(product.get(), ProductDto.class);
+        Product source = product.get();
+        return modelMapper.map(source, ProductDto.class);
     }
 }
