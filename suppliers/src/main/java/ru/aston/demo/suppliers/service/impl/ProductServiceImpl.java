@@ -28,10 +28,8 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto findById(Long id) {
         Optional<Product> product = productRepo.findById(id);
         if (product.isEmpty()) {
-            throw new ResourceNotFoundException("Product not found!");
+            throw new ResourceNotFoundException("Product with id " + id + " not found!");
         }
         return modelMapper.map(product.get(), ProductDto.class);
     }
-
-
 }
