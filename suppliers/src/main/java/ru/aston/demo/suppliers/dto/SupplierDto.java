@@ -4,5 +4,7 @@ import ru.aston.demo.suppliers.entity.Product;
 
 import java.util.List;
 
-public record SupplierDto(Long id, String supplierName, List<Product> productList) {
+public record
+SupplierDto(Long id, String supplierName, List<Product> productList) {
+
 }
