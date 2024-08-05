@@ -19,11 +19,10 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper productMapper;
     @Override
     public List<ProductDto> findAllProducts() {
-        return null;
-//        .findAll()
-//                .stream()
-//                .map(product -> modelMapper.map(product, ProductDto.class))
-//                .toList();
+        return productRepo.findAll()
+                .stream()
+                .map(product -> productMapper.toDto(product))
+                .toList();
     }
 
     @Override
@@ -33,8 +32,6 @@ public class ProductServiceImpl implements ProductService {
             throw new ResourceNotFoundException("Product with id " + id + " not found!");
         }
         Product tempProduct = product.get();
-
-//        SupplierDto tempDto = supplierMapper.supplierDto(tempProduct.getSupplier());
 
         return productMapper.toDto(tempProduct);
     }
