@@ -17,7 +17,6 @@ import java.util.Optional;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepo productRepo;
     private final ProductMapper productMapper;
-
     @Override
     public List<ProductDto> findAllProducts() {
         return null;
@@ -33,7 +32,10 @@ public class ProductServiceImpl implements ProductService {
         if (product.isEmpty()) {
             throw new ResourceNotFoundException("Product with id " + id + " not found!");
         }
-        Product source = product.get();
-        return productMapper.toDto(source);
+        Product tempProduct = product.get();
+
+//        SupplierDto tempDto = supplierMapper.supplierDto(tempProduct.getSupplier());
+
+        return productMapper.toDto(tempProduct);
     }
 }
