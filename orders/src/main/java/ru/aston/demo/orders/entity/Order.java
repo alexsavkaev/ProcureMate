@@ -2,13 +2,9 @@ package ru.aston.demo.orders.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.proxy.HibernateProxy;
-import org.springframework.context.annotation.Lazy;
 import ru.aston.demo.orders.entity.enums.Status;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Objects;
 
 import java.util.List;
 
@@ -40,8 +36,8 @@ public class Order {
     private Supplier supplier;
 
     @OneToMany(mappedBy = "order")
-    private ArrayList<OrderItem> orderItems;
+    @ToString.Exclude
+    private List<OrderItem> orderItems;
 
 
 }
-;
