@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,11 +16,12 @@ import java.util.List;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "order_item_id")
-    private Long id;
+    @Column(name = "orderItem_Id")
+    private Long orderItemId;
 
     @Column(name = "quantity")
     private int quantity;
+
 
     @ManyToOne
     @JoinColumn( name = "order_id")

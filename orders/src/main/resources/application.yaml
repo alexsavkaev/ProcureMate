@@ -7,7 +7,11 @@ spring:
   jpa:
       hibernate:
         ddl-auto: none
+
   application:
     name: orders
   liquibase:
-    change-log: changelog/db.changelog-master.yaml
+    change-log: db/changelog/db.changelog-master.yaml
+logging:
+  level:
+    org.hibernate: off
