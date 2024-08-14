@@ -1,13 +1,14 @@
 package ru.aston.demo.suppliers.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ru.aston.demo.suppliers.dto.ProductDto;
 import ru.aston.demo.suppliers.service.impl.ProductServiceImpl;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -24,6 +25,12 @@ public class ProductController {
     @GetMapping("/{id}")
     public ProductDto getProductDtoById(@PathVariable("id") Long id) {
         return productService.findById(id);
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/")
+    public ResponseEntity<Map<String, String>> createProduct(@RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.save(productDto));
     }
 
 

@@ -10,5 +10,6 @@ public interface ProductMapper {
     @Mapping(target = "supplierDto.id", source = "supplier.id")
     @Mapping(target = "supplierDto.supplierName", source = "supplier.supplierName")
     ProductDto toDto(Product entity);
+    @Mapping(target = "supplier.supplierName", source = "supplierDto.supplierName")
     Product toEntity(ProductDto dto);
 }

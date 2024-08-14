@@ -10,7 +10,7 @@ import ru.aston.demo.suppliers.exception.ResourceNotFoundException;
 
 @ControllerAdvice
 @Slf4j
-public class GlocalExceptionHandler {
+public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<AppError> catchResourceNotFoundException(ResourceNotFoundException e) {
         log.error(e.getMessage(), e);

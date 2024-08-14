@@ -10,6 +10,7 @@ import ru.aston.demo.suppliers.repository.ProductRepo;
 import ru.aston.demo.suppliers.service.ProductService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,5 +35,18 @@ public class ProductServiceImpl implements ProductService {
         Product tempProduct = product.get();
 
         return productMapper.toDto(tempProduct);
+    }
+
+    public Map<String, String> save(ProductDto productDto) {
+        Optional<Product> productFromRepo = productRepo.findByProductName(productDto.productName());
+
+        if (productFromRepo.isPresent()) {
+            throw new RuntimeException("Product with id " + productDto.id() + " already exists!");
+
+        } else {
+            Product product = productMapper.toEntity(productDto);
+            productRepo.save(product);
+        }
+        return Map.of("message", "Product saved!");
     }
 }
