@@ -20,15 +20,6 @@ public class Supplier {
     @Column(name = "supplier_name")
     private String supplierName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> productList = new ArrayList<>();
+    private List<Product> productList;
 
-
-    public void addProduct(Product product){
-        product.setSupplier(this);
-        productList.add(product);
-    }
-
-    public void removeProduct(Product product) {
-        productList.remove(product);
-    }
 }

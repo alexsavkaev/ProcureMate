@@ -1,7 +1,6 @@
 package ru.aston.demo.suppliers.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aston.demo.suppliers.dto.ProductDto;
@@ -27,11 +26,14 @@ public class ProductController {
         return productService.findById(id);
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/")
-    public ResponseEntity<Map<String, String>> createProduct(@RequestBody ProductDto productDto) {
-        return ResponseEntity.ok(productService.save(productDto));
-    }
+//    @PostMapping("/")
+//    public void createProduct(@RequestBody ProductDto productDto) {
+//        productService.save(productDto);
+//    }
 
+    @PostMapping("/save")
+    public ResponseEntity<Map<String, String>> saveProduct(@RequestBody ProductDto productDto) {
+        return ResponseEntity.ok(productService.saveToDb(productDto));
+    }
 
 }

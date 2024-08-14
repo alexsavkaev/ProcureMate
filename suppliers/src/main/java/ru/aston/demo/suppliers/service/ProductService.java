@@ -9,6 +9,5 @@ public interface ProductService {
 
     List<ProductDto> findAllProducts();
     ProductDto findById(Long id);
-    Map<String, String> save(ProductDto productDto);
-
+    Map<String, String> saveToDb(ProductDto productDto);
 }
