@@ -1,5 +1,6 @@
 package ru.aston.demo.orders.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,9 +18,11 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderItem_Id")
+    @JsonProperty("orderItemId")
     private Long orderItemId;
 
     @Column(name = "quantity")
+    @JsonProperty("quantity")
     private int quantity;
 
 
@@ -29,7 +32,8 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    private Product product;
+    @JsonProperty("productId")
+    private Product productId;
 
 
 }

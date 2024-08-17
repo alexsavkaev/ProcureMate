@@ -1,6 +1,7 @@
 package ru.aston.demo.orders.mapper;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import javax.xml.transform.Result;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -8,6 +9,7 @@ import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 import ru.aston.demo.orders.dto.OrderDto;
 import ru.aston.demo.orders.dto.OrderItemDto;
+import ru.aston.demo.orders.dto.OrderToAccountingReportDto;
 import ru.aston.demo.orders.entity.Order;
 import ru.aston.demo.orders.entity.OrderItem;
 
@@ -23,10 +25,10 @@ public interface OrderMapper {
     OrderDto mapToDto(Order order);
     @Named("orderItemMapper")
     @Mapping(source = "orderItemId", target = "id")
-    @Mapping(source = "product.productName", target = "product")
+    @Mapping(source = "productId.productName", target = "product")
     @Mapping(source = "quantity", target = "quantity")
-    @Mapping(source = "product.price", target = "productPrice")
-    @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "productId.productPrice", target = "productPrice")
+    @Mapping(source = "productId.productId", target = "productId")
 
     OrderItemDto mapOrderItemToDto(OrderItem orderItem);
 

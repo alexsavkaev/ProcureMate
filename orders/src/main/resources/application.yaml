@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
-    password: 1234
+    password: 123
     driver-class-name: org.postgresql.Driver
   jpa:
       hibernate:
@@ -14,4 +14,4 @@ spring:
     change-log: db/changelog/db.changelog-master.yaml
 logging:
   level:
-    org.hibernate: off
+    org.hibernate: info

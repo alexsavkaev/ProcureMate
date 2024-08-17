@@ -1,15 +1,24 @@
 package ru.aston.demo.orders.service.impl;
 
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
 import ru.aston.demo.orders.dto.OrderDto;
+import ru.aston.demo.orders.dto.OrderToAccountingReportDto;
 import ru.aston.demo.orders.entity.Order;
+import ru.aston.demo.orders.exception.OrderCreationException;
 import ru.aston.demo.orders.mapper.OrderMapper;
 import ru.aston.demo.orders.repository.OrderRepository;
 import ru.aston.demo.orders.service.OrderService;
@@ -18,9 +27,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
+
+  private final RestClient accountingRestClient = RestClient.create();
 
   private final OrderRepository orderRepository;
 
@@ -41,9 +53,23 @@ public class OrderServiceImpl implements OrderService {
   public List<Order> getMany(List<Long> ids) {
     return orderRepository.findAllById(ids);
   }
-
-  public Order create(Order order) {
-    return orderRepository.save(order);
+@Transactional
+  public Order create(Order order) throws OrderCreationException{
+//  try {
+//    ResponseEntity<Void> response = accountingRestClient.post()
+//        .uri("http://accounting:8080")
+//        .contentType(APPLICATION_JSON)
+//        .body(objectMapper.mapToDto(order))
+//        .retrieve()
+//        .toBodilessEntity();
+//    if (response.getStatusCode().is4xxClientError() || response.getStatusCode().is5xxServerError()) {
+//      throw new OrderCreationException("Failed to create order", response.getStatusCode());
+//    }
+    return orderRepository.save(order) ;
+//  } catch (OrderCreationException e) {
+//    log.error("Error creating order", e);
+//    throw e;
+//  }
   }
 
   public Order patch(Long id, JsonNode patchNode) throws IOException {

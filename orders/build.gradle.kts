@@ -35,6 +35,8 @@ dependencies {
     implementation("org.liquibase:liquibase-core")
     implementation("org.liquibase:liquibase-core")
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
+
+    implementation("ch.qos.logback:logback-classic:1.4.12")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
     annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 }
