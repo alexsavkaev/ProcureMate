@@ -10,7 +10,6 @@ public record OrderItemDto(
     Long id,
     int quantity,
     Long productId,
-    String product,
     BigDecimal productPrice) {
 
 }

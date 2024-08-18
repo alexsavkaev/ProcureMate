@@ -5,10 +5,10 @@
     </encoder>
   </appender>
 
-  <logger name="ru.aston.demo" level="DEBUG"/>
-  <logger name="org.hibernate" level="DEBUG"/>
-  <logger name="org.hibernate.SQL" level="DEBUG"/>
-  <logger name="org.hibernate.type" level="DEBUG"/>
+  <logger name="ru.aston.demo" level="INFO"/>
+  <logger name="org.hibernate" level="INFO"/>
+  <logger name="org.hibernate.SQL" level="INFO"/>
+  <logger name="org.hibernate.type" level="INFO"/>
 
   <root level="INFO">
     <appender-ref ref="STDOUT"/>

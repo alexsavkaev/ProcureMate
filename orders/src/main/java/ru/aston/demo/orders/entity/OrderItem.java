@@ -17,7 +17,7 @@ import lombok.Setter;
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderItem_Id")
+    @Column(name = "order_item_Id")
     @JsonProperty("orderItemId")
     private Long orderItemId;
 
@@ -32,8 +32,8 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "product_id")
-    @JsonProperty("productId")
-    private Product productId;
+    @JsonProperty("product")
+    private Product product;
 
 
 }

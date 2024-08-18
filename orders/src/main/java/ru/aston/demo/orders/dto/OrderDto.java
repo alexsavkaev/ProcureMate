@@ -8,6 +8,12 @@ import java.util.List;
 /**
  * DTO for {@link ru.aston.demo.orders.entity.Order}
  */
-public record OrderDto(Long id, String details, LocalDateTime creationTime, Status status, SupplierDto supplier,
-                       List<OrderItemDto> orderItems) {
+public record OrderDto(
+    Long id,
+    String details,
+    LocalDateTime creationTime,
+    Status status,
+    SupplierDto supplier,
+    List<OrderItemDto> orderItems) {
+
 }
