@@ -7,8 +7,13 @@ import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
+import ru.aston.demo.orders.config.AccountingProperties;
+import ru.aston.demo.orders.config.SuppliersProperties;
+import ru.aston.demo.orders.config.WarehouseProperties;
 import ru.aston.demo.orders.dto.CreateOrderDto;
 import ru.aston.demo.orders.dto.CreatedOrderResponseDto;
 import ru.aston.demo.orders.dto.OrderDto;
@@ -23,17 +28,22 @@ import ru.aston.demo.orders.repository.SupplierRepository;
 import ru.aston.demo.orders.service.OrderService;
 
 import java.util.List;
+import ru.aston.demo.orders.util.RestClientFactory;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
-
+//  private final RestClientFactory clientFactory;
   private final OrderRepository orderRepository;
   private final OrderMapper orderMapper;
   private final SupplierRepository supplierRepository;
   private final OrderItemRepository orderItemRepository;
   private final ProductRepository productRepository;
+  private final WarehouseProperties warehouseProperties;
+  private final SuppliersProperties suppliersProperties;
+  private final AccountingProperties accountingProperties;
+
 
   @Override
   public OrderDto getOne(Long id) {
@@ -69,6 +79,11 @@ public class OrderServiceImpl implements OrderService {
         .collect(Collectors.toList());
 
     orderItemRepository.saveAll(orderItems);
+
+    sendReportToWarehouse(warehouseProperties.getUrl(), savedOrder);
+    sendReportToAccounting(accountingProperties.getUrl(), savedOrder);
+
+
 
     return orderMapper.toResponseDto(orderMapper.mapToDto(savedOrder));
   }
@@ -117,5 +132,22 @@ public class OrderServiceImpl implements OrderService {
     return orderRepository.findAll().stream()
         .map(orderMapper::mapToDto)
         .toList();
+  }
+
+  private void sendReportToWarehouse(String url, Order order){
+    RestClient restClient = RestClientFactory.getRestClient(url);
+    restClient.post()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(orderMapper.toOrderToWarehouseReport(order))
+        .retrieve()
+        .toBodilessEntity();
+  }
+  private void sendReportToAccounting(String url, Order order){
+    RestClient restClient = RestClientFactory.getRestClient(url);
+    restClient.post()
+        .contentType(MediaType.APPLICATION_JSON)
+        .body(orderMapper.toOrderDtoToAccountingReport(orderMapper.mapToDto(order)))
+        .retrieve()
+        .toBodilessEntity();
   }
 }

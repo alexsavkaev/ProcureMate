@@ -9,6 +9,8 @@ import org.mapstruct.Named;
 import ru.aston.demo.orders.dto.CreatedOrderResponseDto;
 import ru.aston.demo.orders.dto.OrderDto;
 import ru.aston.demo.orders.dto.OrderItemDto;
+import ru.aston.demo.orders.dto.OrderToAccountingReportDto;
+import ru.aston.demo.orders.dto.OrderToWarehouseReport;
 import ru.aston.demo.orders.entity.Order;
 import ru.aston.demo.orders.entity.OrderItem;
 
@@ -41,5 +43,32 @@ public interface OrderMapper {
     @Mapping(source = "supplier.supplierName", target = "supplier")
     CreatedOrderResponseDto toResponseDto(OrderDto orderDto);
 
+    @Mappings({
+        @Mapping(target = "orderId", source = "id"),
+        @Mapping(target = "orderItems", source = "orderItems"),
+        @Mapping(target = "movedAt", source = "creationTime")
+    })
+    OrderToWarehouseReport toOrderToWarehouseReport(Order order);
 
-    }
+
+    @Mappings({
+        @Mapping(target = "id", source = "id"),
+        @Mapping(target = "movedAt", source = "creationTime"),
+        @Mapping(target = "orderItems", source = "orderItems"),
+        @Mapping(target = "type", constant = "INCOME")
+    })
+    OrderToAccountingReportDto toOrderDtoToAccountingReport(OrderDto order);
+
+
+
+//    @Mappings({
+//        @Mapping(target = "id", source = "id"),
+//        @Mapping(target = "productId", source = "orderItems.product.productId"),
+//        @Mapping(target = "productName", source = "orderItems.product.productName"),
+//        @Mapping(target = "quantity", source = "orderItems.quantity"),
+//        @Mapping(target = "productPrice", source = "orderItems.product.productPrice"),
+//        @Mapping(target = "movedAt", source = "creationTime"),
+//        @Mapping(target = "type", constant = "INCOME")
+//    })
+//    OrderToAccountingReportDto toAccountingReportDto(Order order);
+}
