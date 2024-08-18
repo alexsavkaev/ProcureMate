@@ -17,11 +17,11 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class
-ProductServiceImpl implements ProductService {
+public class ProductServiceImpl implements ProductService {
     private final ProductRepo productRepo;
     private final ProductMapper productMapper;
     private final SupplierRepo supplierRepo;
+
     @Override
     public List<ProductDto> findAllProducts() {
         return productRepo.findAll()
@@ -32,14 +32,13 @@ ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto findById(Long id) {
-        Optional<Product> product = productRepo.findById(id);
-        if (product.isEmpty()) {
+        Optional<Product> optionalProduct = productRepo.findById(id);
+        if (optionalProduct.isEmpty()) {
             throw new ResourceNotFoundException("Product with id " + id + " not found!");
         }
-        Product tempProduct = product.get();
-
-        return productMapper.toDto(tempProduct);
+        return productMapper.toDto(optionalProduct.get());
     }
+
 
     @Override
     public Map<String, String> saveToDb(ProductDto productDto) {
@@ -47,8 +46,8 @@ ProductServiceImpl implements ProductService {
         if (optionalProduct.isEmpty()) {
             Product product = productMapper.toEntity(productDto);
 
-            // Check if the supplier exists, if not create a new one
-            Optional<Supplier> optionalSupplier = supplierRepo.findBySupplierName(productDto.supplierDto().supplierName());
+            Optional<Supplier> optionalSupplier =
+                    supplierRepo.findBySupplierName(productDto.supplierDto().supplierName());
             if (optionalSupplier.isEmpty()) {
                 Supplier supplier = new Supplier();
                 supplier.setSupplierName(productDto.supplierDto().supplierName());
@@ -65,5 +64,38 @@ ProductServiceImpl implements ProductService {
         return Map.of("message", "Product saved!");
     }
 
+    @Override
+    public Map<String, String> delete(Long id) {
+        Optional<Product> optionalProduct = productRepo.findById(id);
+        if (optionalProduct.isEmpty()) {
+            throw new ResourceNotFoundException("Product with id " + id + " not found!");
+        }
+        productRepo.deleteById(id);
+        return Map.of("message", "Product " + "with id " + id + " deleted!");
+    }
 
+    @Override
+    public Map<String, String> update(ProductDto productDto) {
+        Optional<Product> optionalProduct = productRepo.findById(productDto.id());
+        if (optionalProduct.isEmpty()) {
+            throw new ResourceNotFoundException("Product with id " + productDto.id() + " not found!");
+        }
+        Product product = productMapper.toEntity(productDto);
+        productRepo.save(product);
+        return Map.of("message", "Product " + "with id " + productDto.id() + " updated!");
+    }
+
+    @Override
+    public List<ProductDto> findBySupplierName(String supplierName) {
+        List<Product> bySupplierSupplierName = productRepo.findBySupplier_SupplierName(supplierName);
+        if (bySupplierSupplierName.isEmpty()) {
+            throw new ResourceNotFoundException("Product with supplier name " + supplierName + " not found!");
+        }
+        return bySupplierSupplierName
+                .stream()
+                .map(product -> productMapper.toDto(product))
+                .toList();
+    }
 }
+
+

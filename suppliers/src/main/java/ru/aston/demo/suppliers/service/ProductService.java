@@ -10,4 +10,8 @@ public interface ProductService {
     List<ProductDto> findAllProducts();
     ProductDto findById(Long id);
     Map<String, String> saveToDb(ProductDto productDto);
+    Map<String, String> delete(Long id);
+    Map<String, String> update(ProductDto productDto);
+
+    List<ProductDto> findBySupplierName(String supplierName);
 }
