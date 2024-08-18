@@ -1,9 +1,16 @@
-version: '1.0'
+version: "1"
 
 services:
-  db:
-    image: postgres
-    restart: always
+  postgres:
+    image: postgres:16.1
+    ports:
+      - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: application.properties
       POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    command: postgres -c log_statement=all
+
+networks:
+  my-network:
+    driver: bridge

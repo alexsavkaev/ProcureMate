@@ -1,13 +1,13 @@
 package ru.aston.demo.suppliers.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import ru.aston.demo.suppliers.dto.ProductDto;
 import ru.aston.demo.suppliers.service.impl.ProductServiceImpl;
 
 import java.util.List;
-import java.util.Map;
 
 
 @RestController
@@ -26,14 +26,5 @@ public class ProductController {
         return productService.findById(id);
     }
 
-//    @PostMapping("/")
-//    public void createProduct(@RequestBody ProductDto productDto) {
-//        productService.save(productDto);
-//    }
-
-    @PostMapping("/save")
-    public ResponseEntity<Map<String, String>> saveProduct(@RequestBody ProductDto productDto) {
-        return ResponseEntity.ok(productService.saveToDb(productDto));
-    }
 
 }

@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.aston.demo.suppliers.exception.AppError;
 import ru.aston.demo.suppliers.exception.ResourceNotFoundException;
 
+import java.time.LocalDateTime;
+
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
     @ExceptionHandler
     public ResponseEntity<AppError> catchResourceNotFoundException(ResourceNotFoundException e) {
         log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()),
+        return new ResponseEntity<>(new AppError(e.getMessage(), LocalDateTime.now()),
                 HttpStatus.NOT_FOUND);
     }
 }
