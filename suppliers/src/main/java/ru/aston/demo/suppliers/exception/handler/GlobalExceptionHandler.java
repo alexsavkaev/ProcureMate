@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
-import ru.aston.demo.suppliers.controller.ProductController;
 import ru.aston.demo.suppliers.exception.AppError;
 import ru.aston.demo.suppliers.exception.ResourceNotFoundException;
 
