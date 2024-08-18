@@ -23,5 +23,4 @@ public class Supplier {
     private String supplierName;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplier", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Product> productList;
-
 }
