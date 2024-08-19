@@ -1,0 +1,26 @@
+server:
+  port: 8083
+spring:
+  datasource:
+    url: jdbc:postgresql://${DATABASE_HOST:localhost}:5432/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+      hibernate:
+        ddl-auto: none
+
+  application:
+    name: orders
+  liquibase:
+    change-log: db/changelog/db.changelog-master.yaml
+logging:
+  level:
+    org.hibernate: info
+
+suppliers:
+  url: http://suppliers:8080
+warehouse:
+  url: http://warehouse:8081
+accounting:
+  url: http://accounting:8082
