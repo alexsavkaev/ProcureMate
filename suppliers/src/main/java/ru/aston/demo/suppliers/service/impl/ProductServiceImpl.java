@@ -1,6 +1,8 @@
 package ru.aston.demo.suppliers.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 import ru.aston.demo.suppliers.dto.ProductDto;
 import ru.aston.demo.suppliers.entity.Product;
@@ -12,6 +14,8 @@ import ru.aston.demo.suppliers.repository.ProductRepo;
 import ru.aston.demo.suppliers.repository.SupplierRepo;
 import ru.aston.demo.suppliers.service.ProductService;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -28,7 +32,7 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductDto> findAllProducts() {
         return productRepo.findAll()
                 .stream()
-                .map(product -> productMapper.toDto(product))
+                .map(productMapper::toDto)
                 .toList();
     }
 
@@ -98,8 +102,22 @@ public class ProductServiceImpl implements ProductService {
         }
         return bySupplierSupplierName
                 .stream()
-                .map(product -> productMapper.toDto(product))
+                .map(productMapper::toDto)
                 .toList();
+    }
+
+    @Transactional
+    public void updatePrices() {
+        List<Product> products = productRepo.findAll();
+        for (Product product : products) {
+            product.setPrice(newPrice()); // Пример изменения цены
+            productRepo.save(product);
+        }
+    }
+
+    @NumberFormat(pattern = "#.00")
+    private BigDecimal newPrice(){
+        return BigDecimal.valueOf((Math.random() + 1) * 100).setScale(2, RoundingMode.DOWN);
     }
 }
 
