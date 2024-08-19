@@ -1,0 +1,16 @@
+version: "1"
+
+services:
+  postgres:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: aston_service_supplier
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    command: postgres -c log_statement=all
+
+networks:
+  my-network:
+    driver: bridge
