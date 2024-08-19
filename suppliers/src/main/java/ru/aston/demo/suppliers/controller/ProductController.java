@@ -31,16 +31,16 @@ public class ProductController {
         return productService.findBySupplierName(supplierName);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public Map<String, String> delete(@PathVariable("id") Long id) {
         return productService.delete(id);
     }
 
-    @PatchMapping("/")
+    @PatchMapping("/update")
     public Map<String, String> update(@RequestBody ProductDto productDto) {
         return productService.update(productDto);
     }
-    @PostMapping("/")
+    @PostMapping("/save")
     public Map<String, String> save(@RequestBody ProductDto productDto) {
         return productService.saveToDb(productDto);
     }
