@@ -84,13 +84,6 @@ public class OrderServiceImpl implements OrderService {
 
       orderItemRepository.saveAll(orderItems);
       savedOrder.setOrderItems(orderItems);
-
-      try {
-        sendReportToWarehouse(warehouseProperties.getUrl(), savedOrder);
-      } catch (Exception e) {
-        log.error("Error sending report to warehouse", e);
-      }
-
       try {
         sendReportToAccounting(accountingProperties.getUrl(), savedOrder);
       } catch (Exception e) {
