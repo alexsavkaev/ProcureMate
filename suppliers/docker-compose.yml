@@ -6,7 +6,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: application.properties
+      POSTGRES_DB: aston_service_supplier
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     command: postgres -c log_statement=all
