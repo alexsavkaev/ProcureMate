@@ -14,6 +14,7 @@ import ru.aston.demo.suppliers.service.ProductService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Map<String, String> saveToDb(ProductDto productDto) {
         Optional<Product> optionalProduct = productRepo.findByProductName(productDto.productName());
+        if (Objects.nonNull(productDto.id())) {
+            throw new ResourceAlreadyExistException("Product with id: " + productDto.id() + " already exists!");
+        }
         if (optionalProduct.isEmpty()) {
             Product product = productMapper.toEntity(productDto);
 
