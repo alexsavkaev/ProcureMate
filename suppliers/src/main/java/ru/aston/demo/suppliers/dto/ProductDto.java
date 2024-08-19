@@ -1,4 +1,6 @@
 package ru.aston.demo.suppliers.dto;
 
-public record ProductDto(Long id, String productName, SupplierDto supplierDto) {
+import java.math.BigDecimal;
+
+public record ProductDto(Long id, String productName, BigDecimal price, SupplierDto supplierDto) {
 }
