@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import ru.aston.demo.suppliers.exception.AppError;
+import ru.aston.demo.suppliers.exception.ResourceAlreadyExistException;
 import ru.aston.demo.suppliers.exception.ResourceNotFoundException;
 
 import java.time.LocalDateTime;
@@ -20,5 +21,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new AppError(e.getMessage(), LocalDateTime.now()),
                 HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<AppError> catchResourceAlreadyExistException(ResourceAlreadyExistException e) {
+        log.error(e.getMessage(), e);
+
+        return new ResponseEntity<>(new AppError(e.getMessage(), LocalDateTime.now()),
+                HttpStatus.CONFLICT);
     }
 }
