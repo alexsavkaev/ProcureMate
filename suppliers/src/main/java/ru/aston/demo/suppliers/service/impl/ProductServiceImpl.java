@@ -2,7 +2,6 @@ package ru.aston.demo.suppliers.service.impl;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.NumberFormat;
 import org.springframework.stereotype.Service;
 import ru.aston.demo.suppliers.dto.ProductDto;
 import ru.aston.demo.suppliers.entity.Product;
@@ -115,9 +114,10 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    @NumberFormat(pattern = "#.00")
-    private BigDecimal newPrice(){
-        return BigDecimal.valueOf((Math.random() + 1) * 100).setScale(2, RoundingMode.DOWN);
+    private BigDecimal newPrice() {
+        return BigDecimal.valueOf(
+                        (1 + (Math.random() * (10000 - 1))))
+                .setScale(2, RoundingMode.DOWN);
     }
 }
 
