@@ -6,6 +6,7 @@ import ru.aston.demo.suppliers.dto.ProductDto;
 import ru.aston.demo.suppliers.entity.Product;
 import ru.aston.demo.suppliers.entity.Supplier;
 import ru.aston.demo.suppliers.entity.mapper.ProductMapper;
+import ru.aston.demo.suppliers.exception.ResourceAlreadyExistException;
 import ru.aston.demo.suppliers.exception.ResourceNotFoundException;
 import ru.aston.demo.suppliers.repository.ProductRepo;
 import ru.aston.demo.suppliers.repository.SupplierRepo;
@@ -59,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
 
             productRepo.save(product);
         } else {
-            throw new RuntimeException("Product name already exists!");
+            throw new ResourceAlreadyExistException("Product name already exists!");
         }
         return Map.of("message", "Product saved!");
     }
