@@ -3,11 +3,13 @@ package ru.aston.demo.orders.service.impl;
 import com.fasterxml.jackson.databind.JsonNode;
 import jakarta.transaction.Transactional;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.server.ResponseStatusException;
@@ -34,7 +36,8 @@ import ru.aston.demo.orders.util.RestClientFactory;
 @RequiredArgsConstructor
 @Service
 public class OrderServiceImpl implements OrderService {
-//  private final RestClientFactory clientFactory;
+
+  //  private final RestClientFactory clientFactory;
   private final OrderRepository orderRepository;
   private final OrderMapper orderMapper;
   private final SupplierRepository supplierRepository;
@@ -60,32 +63,48 @@ public class OrderServiceImpl implements OrderService {
 
   @Override
   @Transactional
-  public CreatedOrderResponseDto create(CreateOrderDto request){
-    Order order = new Order();
-    order.setDetails(request.details());
-    order.setStatus(Status.NEW);
-    order.setSupplier(supplierRepository.findById(request.supplierId()).orElseThrow());
+  public ResponseEntity<CreatedOrderResponseDto> create(CreateOrderDto request) {
+    try {
+      Order order = new Order();
+      order.setDetails(request.details());
+      order.setStatus(Status.NEW);
+      order.setSupplier(supplierRepository.findById(request.supplierId()).orElseThrow());
 
-    Order savedOrder = orderRepository.save(order);
+      Order savedOrder = orderRepository.save(order);
 
-    List<OrderItem> orderItems = request.orderItems().stream()
-        .map(item -> {
-          OrderItem orderItem = new OrderItem();
-          orderItem.setQuantity(item.quantity());
-          orderItem.setProduct(productRepository.findById(item.productId()).orElseThrow());
-          orderItem.setOrder(savedOrder);
-          return orderItem;
-        })
-        .collect(Collectors.toList());
+      List<OrderItem> orderItems = request.orderItems().stream()
+          .map(item -> {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setQuantity(item.quantity());
+            orderItem.setProduct(productRepository.findById(item.productId()).orElseThrow());
+            orderItem.setOrder(savedOrder);
+            return orderItem;
+          })
+          .collect(Collectors.toList());
 
-    orderItemRepository.saveAll(orderItems);
+      orderItemRepository.saveAll(orderItems);
+      savedOrder.setOrderItems(orderItems);
 
-    sendReportToWarehouse(warehouseProperties.getUrl(), savedOrder);
-    sendReportToAccounting(accountingProperties.getUrl(), savedOrder);
+      try {
+        sendReportToWarehouse(warehouseProperties.getUrl(), savedOrder);
+      } catch (Exception e) {
+        log.error("Error sending report to warehouse", e);
+      }
 
-
-
-    return orderMapper.toResponseDto(orderMapper.mapToDto(savedOrder));
+      try {
+        sendReportToAccounting(accountingProperties.getUrl(), savedOrder);
+      } catch (Exception e) {
+        log.error("Error sending report to accounting", e);
+      }
+      return ResponseEntity.status(HttpStatus.CREATED)
+          .body(orderMapper.toResponseDto(orderMapper.mapToDto(savedOrder)));
+    } catch (Exception e) {
+      if (e instanceof NoSuchElementException) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      } else {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+      }
+    }
   }
 
   @Override
@@ -100,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
   }
 
   @Override
-  public List<Long> patchMany(List<Long> ids, JsonNode patchNode){
+  public List<Long> patchMany(List<Long> ids, JsonNode patchNode) {
     Collection<Order> orders = orderRepository.findAllById(ids);
 
     for (Order order : orders) {
@@ -134,7 +153,7 @@ public class OrderServiceImpl implements OrderService {
         .toList();
   }
 
-  private void sendReportToWarehouse(String url, Order order){
+  private void sendReportToWarehouse(String url, Order order) {
     RestClient restClient = RestClientFactory.getRestClient(url);
     restClient.post()
         .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +161,8 @@ public class OrderServiceImpl implements OrderService {
         .retrieve()
         .toBodilessEntity();
   }
-  private void sendReportToAccounting(String url, Order order){
+
+  private void sendReportToAccounting(String url, Order order) {
     RestClient restClient = RestClientFactory.getRestClient(url);
     restClient.post()
         .contentType(MediaType.APPLICATION_JSON)

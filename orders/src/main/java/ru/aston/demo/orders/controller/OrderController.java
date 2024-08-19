@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -43,7 +44,7 @@ public class OrderController {
   }
 
   @PostMapping
-  public CreatedOrderResponseDto create(@RequestBody CreateOrderDto request) throws OrderCreationException {
+  public ResponseEntity<CreatedOrderResponseDto> create(@RequestBody CreateOrderDto request) throws OrderCreationException {
     return orderService.create(request);
   }
 

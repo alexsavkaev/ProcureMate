@@ -1,10 +1,12 @@
 package ru.aston.demo.orders.dto;
 
+import java.util.List;
+
 public record CreatedOrderResponseDto (
     Long id,
     String details,
-    String supplier,
-    Long supplierId
+    SupplierDto supplier,
+    List<OrderItemDto> orderItems
 ){
 
 }

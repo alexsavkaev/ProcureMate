@@ -37,11 +37,12 @@ public interface OrderMapper {
     })
     void patch(JsonNode patchNode, @MappingTarget Order target);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "details", target = "details")
-    @Mapping(source = "supplier.id", target = "supplierId")
-    @Mapping(source = "supplier.supplierName", target = "supplier")
-    CreatedOrderResponseDto toResponseDto(OrderDto orderDto);
+        @Mapping(source = "id", target = "id")
+        @Mapping(source = "details", target = "details")
+        @Mapping(source = "supplier", target = "supplier")
+        @Mapping(source = "orderItems", target = "orderItems")
+        CreatedOrderResponseDto toResponseDto(OrderDto orderDto);
+
 
     @Mappings({
         @Mapping(target = "orderId", source = "id"),
