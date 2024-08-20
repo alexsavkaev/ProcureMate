@@ -65,10 +65,11 @@ public class OrderServiceImpl implements OrderService {
   @Transactional
   public ResponseEntity<CreatedOrderResponseDto> create(CreateOrderDto request) {
     try {
-      Order order = new Order();
-      order.setDetails(request.details());
-      order.setStatus(Status.NEW);
-      order.setSupplier(supplierRepository.findById(request.supplierId()).orElseThrow());
+      Order order = Order.builder()
+          .details(request.details())
+          .status(Status.NEW)
+          .supplier(supplierRepository.findById(request.supplierId()).orElseThrow())
+          .build();
 
       Order savedOrder = orderRepository.save(order);
 
@@ -84,11 +85,7 @@ public class OrderServiceImpl implements OrderService {
 
       orderItemRepository.saveAll(orderItems);
       savedOrder.setOrderItems(orderItems);
-      try {
-        sendReportToAccounting(accountingProperties.getUrl(), savedOrder);
-      } catch (Exception e) {
-        log.error("Error sending report to accounting", e);
-      }
+
       return ResponseEntity.status(HttpStatus.CREATED)
           .body(orderMapper.toResponseDto(orderMapper.mapToDto(savedOrder)));
     } catch (Exception e) {

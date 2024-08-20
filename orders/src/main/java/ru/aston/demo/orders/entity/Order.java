@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.ToString.Exclude;
 import ru.aston.demo.orders.entity.enums.Status;
 
 import java.time.LocalDateTime;
@@ -16,6 +17,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @Table(name = "orders")
 @Entity
+@Builder
+@AllArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +40,12 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "supplier_id")
-    @ToString.Exclude
+    @Exclude
     @JsonProperty("supplier")
     private Supplier supplier;
 
     @OneToMany(mappedBy = "order")
-    @ToString.Exclude
+    @Exclude
     @JsonProperty("orderItems")
     private List<OrderItem> orderItems;
 
