@@ -59,7 +59,7 @@ public class SupplierServiceImpl implements SupplierService {
     List<Product> products = new ArrayList<>();
     log.debug("Created empty list of products");
 
-    Product product = null;
+    Product product;
     for (ProductDto productDto : prices) {
       log.debug("Processing productDto: {}", productDto);
       product = orderMapper.toProduct(productDto);
