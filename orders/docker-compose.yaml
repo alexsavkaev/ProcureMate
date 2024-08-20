@@ -11,10 +11,17 @@ services:
     container_name: orders
     environment:
       - DATABASE_HOST=orders_db
+    networks:
+      - my-network
   orders_db:
     image: postgres:latest
     container_name: orders_db
-    restart: always
+    restart: unless-stopped
     environment:
       - POSTGRES_PASSWORD=1234
-
+    networks:
+      - my-network
+networks:
+  my-network:
+    driver: bridge
+    name: my-network

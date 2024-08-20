@@ -1,32 +1,54 @@
-
+version: '3'
 
 services:
   suppliers:
     depends_on:
       - suppliers_db
     build:
-      context: .
+      context: ./suppliers
       dockerfile: Dockerfile
     ports:
-        - 8080:8080
+      - "8080:8080"
     container_name: suppliers
     environment:
       - DATABASE_HOST=suppliers_db
     networks:
       - my-network
+
   suppliers_db:
     image: postgres:latest
     container_name: suppliers_db
     restart: unless-stopped
-
     environment:
       POSTGRES_DB: supplier_db
       POSTGRES_PASSWORD: postgres
-
     command: postgres -c log_statement=all
     networks:
       - my-network
+
+  orders:
+    depends_on:
+      - orders_db
+    build:
+      context: ./orders
+      dockerfile: Dockerfile
+    ports:
+      - "8083:8083"
+    container_name: orders
+    environment:
+      - DATABASE_HOST=orders_db
+    networks:
+      - my-network
+
+  orders_db:
+    image: postgres:latest
+    container_name: orders_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=1234
+    networks:
+      - my-network
+
 networks:
   my-network:
-    name: my-network
-    external: true
+    driver: bridge

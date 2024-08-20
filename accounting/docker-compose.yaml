@@ -1,0 +1,19 @@
+version: "1"
+services:
+  accounting:
+    -depends_on:
+       - accounting_db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      -8082:8082
+    container_name: accounting
+    environment:
+      - DATABASE_HOST=accounting_db
+  accounting_db:
+    image: postgres:latest
+    container_name: orders_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=1234
