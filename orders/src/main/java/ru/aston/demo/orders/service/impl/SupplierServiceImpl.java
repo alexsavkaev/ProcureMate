@@ -37,6 +37,7 @@ public class SupplierServiceImpl implements SupplierService {
     try {
       String responseBody = restClient
           .get()
+          .uri("/supplier-service/products/all")
           .retrieve()
           .body(String.class);
       List<ProductDto> prices = mapper.readValue(responseBody, new TypeReference<>() {
@@ -52,12 +53,24 @@ public class SupplierServiceImpl implements SupplierService {
     }
   }
 
-  private void updatePrices(List<ProductDto> prices){
+  private void updatePrices(List<ProductDto> prices) {
+    log.info("Starting updatePrices method with {} prices", prices.size());
+
     List<Product> products = new ArrayList<>();
-    for(ProductDto productDto : prices){
-      products.add(orderMapper.toProduct(productDto));
+    log.debug("Created empty list of products");
+
+    Product product = null;
+    for (ProductDto productDto : prices) {
+      log.debug("Processing productDto: {}", productDto);
+      product = orderMapper.toProduct(productDto);
+      log.debug("Mapped productDto to product: {}", product);
+      log.debug("Product: {}", product.toString());
+      products.add(product);
     }
+
+    log.info("Saving {} products to database", products.size());
     productRepository.saveAll(products);
+    log.info("Products saved successfully");
   }
 
   @Override

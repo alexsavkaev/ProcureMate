@@ -34,4 +34,11 @@ public class Supplier {
     @OneToMany(mappedBy = "supplier")
     private List<Order> orders;
 
+    @Override
+    public String toString() {
+        return "Supplier{" +
+            "id=" + id +
+            ", supplierName='" + supplierName + '\'' +
+            '}';
+    }
 }

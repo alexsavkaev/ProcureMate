@@ -9,6 +9,7 @@
   <logger name="org.hibernate" level="INFO"/>
   <logger name="org.hibernate.SQL" level="INFO"/>
   <logger name="org.hibernate.type" level="INFO"/>
+  <logger name="ru.aston.demo.orders.service.impl.SupplierServiceImpl" level="DEBUG"/>
 
   <root level="INFO">
     <appender-ref ref="STDOUT"/>

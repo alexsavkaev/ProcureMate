@@ -67,6 +67,8 @@ public interface OrderMapper {
   OrderToAccountingReportDto toOrderDtoToAccountingReport(OrderDto order);
 
   @Mapping(target = "suppliers", source = "supplierDto")
+  @Mapping(target = "productId", source = "id")
+  @Mapping(target = "productPrice", source = "price")
   Product toProduct(ProductDto productDto);
 
 
