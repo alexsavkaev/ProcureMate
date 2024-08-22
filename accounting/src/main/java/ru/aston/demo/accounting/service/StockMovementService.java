@@ -30,8 +30,9 @@ public class StockMovementService {
     }
 
     public long create(@Valid StockMovement movement) {
-        StockMovementEntity movementEntity = movementMapper.toStockMovementEntity(movement);
-        StockMovementEntity createdMovement = movementRepository.save(movementEntity);
+        StockMovementEntity createdMovement = movementRepository.save(
+            movementMapper.toStockMovementEntity(movement)
+        );
 
         return createdMovement.getId();
     }

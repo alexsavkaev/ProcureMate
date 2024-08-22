@@ -1,15 +1,13 @@
 package ru.aston.demo.accounting.dto;
 
-import lombok.Getter;
+import java.time.LocalDateTime;
 import ru.aston.demo.accounting.type.MovementType;
-
-import java.time.Instant;
 import java.util.List;
 
 
 public record OrderDto(
         long id,
-        Instant movedAt,
+        LocalDateTime movedAt,
         MovementType type,
         List<OrderItemDto> orderItems
 ) {

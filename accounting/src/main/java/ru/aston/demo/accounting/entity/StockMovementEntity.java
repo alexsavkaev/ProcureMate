@@ -7,19 +7,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import ru.aston.demo.accounting.type.MovementType;
-
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import ru.aston.demo.accounting.type.MovementType;
 
 @Entity
 @Table(name = "stock_movement", schema = "movements")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString
 public class StockMovementEntity {
 
     @Id
@@ -29,7 +32,7 @@ public class StockMovementEntity {
     private String productName;
     private long quantity;
     private BigDecimal price;
-    private Instant movedAt;
+    private LocalDateTime movedAt;
 
     @Enumerated(EnumType.STRING)
     private MovementType type;

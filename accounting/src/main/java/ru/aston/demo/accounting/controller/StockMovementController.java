@@ -1,6 +1,8 @@
 package ru.aston.demo.accounting.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -23,6 +25,8 @@ import static java.time.temporal.ChronoUnit.DAYS;
 @RequestMapping("/movements")
 @RequiredArgsConstructor
 public class StockMovementController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(StockMovementController.class);
+
 
     private final StockMovementService movementService;
     private final StockMovementDtoMapper movementDtoMapper;
@@ -53,12 +57,21 @@ public class StockMovementController {
 
     @PostMapping
     public ResponseEntity<StockMovementDto> create(
-            @RequestBody StockMovementDto movementDto, UriComponentsBuilder uriBuilder) {
+        @RequestBody StockMovementDto movementDto, UriComponentsBuilder uriBuilder) {
+
+        LOGGER.info("Creating new stock movement");
+        LOGGER.debug("Received movement DTO: {}", movementDto);
 
         StockMovement movement = movementDtoMapper.toStockMovement(movementDto);
-        long createdId = movementService.create(movement);
-        URI uri = uriBuilder.path("/movements/{id}").build(createdId);
+        LOGGER.debug("Mapped movement DTO to entity: {}", movement);
 
+        long createdId = movementService.create(movement);
+        LOGGER.info("Created new stock movement with ID: {}", createdId);
+
+        URI uri = uriBuilder.path("/movements/{id}").build(createdId);
+        LOGGER.debug("Built URI for created movement: {}", uri);
+
+        LOGGER.info("Returning created response");
         return ResponseEntity.created(uri).build();
     }
 
