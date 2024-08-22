@@ -5,8 +5,8 @@ create table product
     product_price decimal(5,2),
     product_info varchar(255),
     product_quantity int,
-    movedAt datetime,
-    movement_type enam(INCOME, OUTCOME)
+    movedAt TIMESTAMP,
+    movement_type VARCHAR(255),
 
     primary key (product_id)
 );
