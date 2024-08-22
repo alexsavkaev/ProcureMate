@@ -1,0 +1,4 @@
+databaseChangeLog:
+
+  - include:
+      file: db/v1.0/create_table.sql
