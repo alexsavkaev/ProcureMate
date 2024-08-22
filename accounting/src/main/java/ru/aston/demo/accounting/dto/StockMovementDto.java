@@ -12,6 +12,5 @@ public record StockMovementDto(
         long quantity,
         BigDecimal price,
         Instant movedAt,
-        MovementType type) {
-
+        MovementType movementType) {
 }
