@@ -1,4 +1,6 @@
 databaseChangeLog:
 
   - include:
-      file: db/v1.0/create_table.sql
+      file: classpath:db.v1.0/create_table.sql
+  - include:
+      file: classpath:db.v1.0/init_table.sql
