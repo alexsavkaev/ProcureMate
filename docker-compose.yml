@@ -1,4 +1,4 @@
-version: '3'
+
 
 services:
   suppliers:
@@ -13,7 +13,7 @@ services:
     environment:
       - DATABASE_HOST=suppliers_db
     networks:
-      - my-network
+      - procure-mate
 
   suppliers_db:
     image: postgres:latest
@@ -24,7 +24,7 @@ services:
       POSTGRES_PASSWORD: postgres
     command: postgres -c log_statement=all
     networks:
-      - my-network
+      - procure-mate
 
   orders:
     depends_on:
@@ -38,7 +38,7 @@ services:
     environment:
       - DATABASE_HOST=orders_db
     networks:
-      - my-network
+      - procure-mate
 
   orders_db:
     image: postgres:latest
@@ -47,7 +47,7 @@ services:
     environment:
       - POSTGRES_PASSWORD=1234
     networks:
-      - my-network
+      - procure-mate
 
 
   accounting:
@@ -62,7 +62,7 @@ services:
     environment:
       - DATABASE_HOST=accounting_db
     networks:
-      - my-network
+      - procure-mate
 
   accounting_db:
     image: postgres:latest
@@ -72,7 +72,34 @@ services:
       - POSTGRES_PASSWORD=1234
       - POSTGRES_DB=accounting
     networks:
-      - my-network
+      - procure-mate
+
+  warehouse:
+    depends_on:
+      - warehouse_db
+    build:
+      context: ./warehouse
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    container_name: warehouse
+    environment:
+      - DATABASE_HOST=warehouse_db
+    networks:
+      - procure-mate
+
+  warehouse_db:
+    image: postgres:latest
+    container_name: warehouse_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=warehouse
+    networks:
+      - procure-mate
+
 networks:
-  my-network:
+  procure-mate:
     driver: bridge
+
+

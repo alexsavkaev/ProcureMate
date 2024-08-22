@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductsService {
         try {
             String responseBody = restClient
                     .post()
-                    .uri("/movements-service/movements")
+                    .uri("http://accounting:8082/movements")
                     .retrieve()
                     .body(String.class);
             List<StockMovementDto> stockMovementDtos = mapper.readValue(responseBody, new TypeReference<>() {
@@ -107,10 +107,7 @@ public class ProductServiceImpl implements ProductsService {
         public ProductsDto deleteProduct (Long id){
             Product product = productRepository.findById(id).get();
             productRepository.delete(product);
-            if (product != null) {
-                return productsMapper.toProductDto(product);
-            }
-            return null;
+          return productsMapper.toProductDto(product);
         }
 
         private int getDelta ( int originalNumber){
