@@ -5,7 +5,7 @@ create table product
     product_price decimal(5,2),
     product_info varchar(255),
     product_quantity int,
-    movedAt TIMESTAMP,
+    moved_at TIMESTAMP,
     movement_type VARCHAR(255),
 
     primary key (product_id)
