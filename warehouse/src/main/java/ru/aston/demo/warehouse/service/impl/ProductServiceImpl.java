@@ -1,5 +1,6 @@
 package ru.aston.demo.warehouse.service.impl;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -89,17 +90,23 @@ public class ProductServiceImpl implements ProductsService {
         }
         RestClient restClient = RestClient.create();
         try {
-            String responseBody = restClient
-                    .post()
-                    .uri("http://accounting:8082/movements")
-                    .retrieve()
-                    .body(String.class);
+            String requestBody = mapper.writeValueAsString(updatedQuantities);// сериализуйте данные, которые вы хотите передать в теле запроса
+                String responseBody = restClient
+                .post()
+                .uri("http://accounting:8082/movements")
+                .body(requestBody)
+                .retrieve()
+                .body(String.class);
             List<StockMovementDto> stockMovementDtos = mapper.readValue(responseBody, new TypeReference<>() {
             });
             return productRepository.saveAll(updatedQuantities);
+        } catch (JsonProcessingException e) {
+            // обработайте ошибку десериализации
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            // обработайте другие ошибки
         }
+
+        return productRepository.saveAll(updatedQuantities);
     }
 
 

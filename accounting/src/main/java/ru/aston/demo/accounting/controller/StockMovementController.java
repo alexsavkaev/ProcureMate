@@ -3,6 +3,7 @@ package ru.aston.demo.accounting.controller;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -55,7 +56,7 @@ public class StockMovementController {
         return ResponseEntity.ok(movementDtos);
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<StockMovementDto> create(
         @RequestBody StockMovementDto movementDto, UriComponentsBuilder uriBuilder) {
 
