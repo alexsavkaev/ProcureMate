@@ -53,7 +53,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
   }
 
-  private void updatePrices(List<ProductDto> prices) {
+  public void updatePrices(List<ProductDto> prices) {
     log.info("Starting updatePrices method with {} prices", prices.size());
 
     List<Product> products = new ArrayList<>();

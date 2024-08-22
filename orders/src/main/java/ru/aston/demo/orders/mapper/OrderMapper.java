@@ -73,6 +73,7 @@ public interface OrderMapper {
 
 
   Supplier toSupplier(SupplierDto supplier);
+  SupplierDto toSupplierDto(Supplier supplier);
   default List<Supplier> map(SupplierDto supplierDto) {
     return Collections.singletonList(toSupplier(supplierDto));
   }
